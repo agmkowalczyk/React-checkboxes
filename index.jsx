@@ -4,13 +4,14 @@ class Checkbox extends React.Component {
   }
 
   toggleChackboxChange = () => {
-    const { label } = this.props;
+    const { handleCheckboxChange, label } = this.props;
 
     this.setState(({ isChecked }) => (
       {
         isChecked: !isChecked,
       }
     ));
+    handleCheckboxChange(label);
   }
 
   render() {
@@ -38,11 +39,24 @@ class App extends React.Component {
     labels: ['option 1','option 2','option 3','option 4','option 5']
   };
   
+  componentWillMount = () => {
+    this.selectedCheckboxes = new Set();
+  }
+
+  toggleCheckbox = label => {
+    if (this.selectedCheckboxes.has(label)) {
+      this.selectedCheckboxes.delete(label);
+    } else {
+      this.selectedCheckboxes.add(label);
+    }  
+    console.log(this.selectedCheckboxes);
+  }
 
   createCheckbox = label => (
     <Checkbox
       label={label}
       key={label}
+      handleCheckboxChange={this.toggleCheckbox}
     />
   )
 
